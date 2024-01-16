@@ -1,6 +1,6 @@
 from core import db
-from core.libs import helpers
-
+from core.libs import helpers, assertions
+from core.apis.decorators import AuthPrincipal
 
 class Teacher(db.Model):
     __tablename__ = 'teachers'
@@ -11,3 +11,14 @@ class Teacher(db.Model):
 
     def __repr__(self):
         return '<Teacher %r>' % self.id
+    
+
+    @classmethod
+    def filter(cls, *criterion):
+        db_query = db.session.query(cls)
+        return db_query.filter(*criterion)
+
+    @classmethod
+    def list_teachers(cls,auth_principal:AuthPrincipal):
+        assertions.assert_auth(auth_principal.principal_id)
+        return cls.filter().all() 

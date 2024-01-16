@@ -60,3 +60,30 @@ def test_regrade_assignment(client, h_principal):
 
     assert response.json['data']['state'] == AssignmentStateEnum.GRADED.value
     assert response.json['data']['grade'] == GradeEnum.B
+
+
+def test_get_teacher_lists(client, h_principal):
+    response = client.get(
+        '/principal/teachers',
+        headers = h_principal
+    )
+
+    assert response.status_code == 200
+    assert response.json['data'][0]['id'] == 1
+    assert response.json['data'][1]['id'] == 2
+
+def test_404_error(client,h_principal):
+    response = client.get(
+        '/principle',
+        headers = h_principal
+    )
+
+    assert response.status_code == 404
+
+def test_auth_error(client, h_student_1):
+    response = client.get(
+        '/principal/assignments/',
+        headers = h_student_1
+    )
+
+    assert response.status_code == 403

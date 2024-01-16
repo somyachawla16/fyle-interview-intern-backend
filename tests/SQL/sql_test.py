@@ -55,7 +55,7 @@ def test_get_assignments_in_various_states():
 
     # Define the expected result before any changes
     expected_result = [('DRAFT', 2), ('GRADED', 2), ('SUBMITTED', 2)]
-
+    
     # Execute the SQL query and compare the result with the expected result
     with open('tests/SQL/number_of_assignments_per_state.sql', encoding='utf8') as fo:
         sql = fo.read()
